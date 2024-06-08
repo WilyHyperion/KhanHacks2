@@ -1,7 +1,9 @@
 import Image from "next/image";
 import { Inter } from "next/font/google";
+import UploadNotes from "../components/UploadNotes";
 import React, { useEffect } from "react";
 import Webcam from "react-webcam";
+import ViewNotes from "@/components/ViewNotes";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
@@ -51,8 +53,37 @@ export default function Home() {
     [webcamRef, setImgSrc]
   );
   return (
+
     <>
+    <div className="absolute block top-[15vh] left-[5vw]">
+      <div className="font-black text-6xl">
+      Welcome
+      </div>
+
+      <div className="font-extralight text-4xl">
+      Noah Small
+      </div>
+      <div className="font-semibold text-2xl grid grid-cols-[40vw] grid-rows-[repeat(4,2xl)] text-[#868D83]">
+        <div>
+        <img src="/search.svg" alt="Search Icon" className="inline-block w-[1.5vw] h-[1.5vw]"/>
+        Explore your notes
+        </div>
+        <div>
+        <img src="/pencil.svg" alt="Pencil" className="inline-block w-[1.5vw] h-[1.5vw]"/>
+          Create a note
+        </div>
+        <div>
+        <img src="/upload.svg" alt="Search Icon" className="inline-block w-[1.5vw] h-[1.5vw]"/>
+          Upload a note
+        </div>
+        <div>
+          Scan a note
+        </div>
+      </div>
+
+    </div>
       <div className="w-full h-full absolute left-0 top-0 text-center ">
+        <a href="/login">Login</a>
         <input type="file"  onChange={
           (e) => {
             console.log(e.target.files[0]);
@@ -72,11 +103,11 @@ export default function Home() {
                   console.log(res);
                 });
             };
-            reader.readAsDataURL(file);
+            reader.readAsDataURL(file);m
           }
         
         }/>
-        <Webcam ref={webcamRef} videoConstraints={videoConstraints} />
+        {/* <Webcam ref={webcamRef} videoConstraints={videoConstraints} /> */}
         <button
           onClick={() => {
             capture(1);
@@ -92,6 +123,15 @@ export default function Home() {
           textocr
         </button>
         {imgSrc && <img src={imgSrc} alt="captured image" />}
+        <div className="absolute left-[50%] bottom-[50%]">
+        <UploadNotes>
+
+        </UploadNotes>
+        </div><div className="absolute left-[60%] bottom-[30%] text-xs ">
+        <ViewNotes>
+
+        </ViewNotes>
+        </div>
       </div>
     </>
   );

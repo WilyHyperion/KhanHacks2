@@ -8,13 +8,9 @@ export const config = {
 };
 export default async function handler(req, res) {  
   let image = req.body.data;
-  const fs = require("fs");
-  console.log(__dirname);
-  fs.writeFileSync(__dirname + "image", image);
-  console.log("image saved")
-  const worker = await createWorker();
+  const worker = await createWorker('eng');
   const r = await worker.recognize(image);
   const text = r.data.text;
   await worker.terminate();
-  res.status(200).json({ text });
+  res.status(200).json({ text: text });
 }
