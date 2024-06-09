@@ -55,60 +55,14 @@ export default function Home() {
   );
   return (
     <>
-    <Menu></Menu>
-      <div className="w-full h-full absolute left-0 top-0 text-center ">
-        <a href="/login">Login</a>
-        <input type="file"  onChange={
-          (e) => {
-            console.log(e.target.files[0]);
-            const file = e.target.files[0];
-            const reader = new FileReader();
-            reader.onload = function (e) {
-              console.log(e.target.result);
-              fetch("/api/imagetotext", {
-                method: "POST",
-                body: JSON.stringify({ data: e.target.result }),
-                headers: {
-                  "Content-Type": "application/json",
-                },
-              })
-                .then((res) => res.json())
-                .then((res) => {
-                  console.log(res);
-                });
-            };
-            reader.readAsDataURL(file);m
-          }
-        
-        }/>
-        {/* <Webcam ref={webcamRef} videoConstraints={videoConstraints} /> */}
-        <button
-          onClick={() => {
-            capture(1);
-          }}
-        >
-          Capture
-        </button>
-        <button
-          onClick={() => {
-            capture(2);
-          }}
-        >
-          textocr
-        </button>
-        {imgSrc && <img src={imgSrc} alt="captured image" />}
-        <div className="relative left-[50vw]">
-        <UploadNotes>
-
-        </UploadNotes>
-        </div>
-        <div className="absolute left-[60%] bottom-[30%] text-xs ">
-        <ViewNotes>
-
-        </ViewNotes>
-        </div>
-      </div>
-      </>
+    
+    
+    <Menu/>
+    <div className="relative block ">
+      <a href="/login">Login</a>
+      <ViewNotes/>
+    </div>
+    </>
     
   );
 }

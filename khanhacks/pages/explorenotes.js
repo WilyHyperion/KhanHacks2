@@ -3,10 +3,13 @@ import StudyGuide from "@/components/StudyGuide";
 import { useState, useEffect, createElement } from "react";
 import Highlighter from "react-highlight-words";
 import Image from "next/image";
+import NotePopUp from "@/components/NotePopUp";
 export default function Explorenotes() {
   const [guides, setGuides] = useState([]);
   const [search, setSearch] = useState("");
-
+  const toggleNote = (id) => {
+    setNotes(notes.map(note => note.title === id ? { ...note, isOpen: !note.isOpen } : note));
+  }
   function shouldDisplay(note) {
     return (
       note.title.toLowerCase().includes(search.toLowerCase()) ||
@@ -27,6 +30,9 @@ export default function Explorenotes() {
     })
       .then((res) => res.json())
       .then((res) => {
+        if(!res.notes){
+          return
+        }
         const updatedNotes = res.notes.map((note) => ({
           ...note,
           isOpen: false,
@@ -34,48 +40,100 @@ export default function Explorenotes() {
         setNotes(updatedNotes);
       });
   }, []);
+  const [visible, setVisible] = useState(false);
+  const [curnote, setNote] = useState({title: "", note: ""});
+ async function createnewQuestion(note, title){
+    let b = await (await fetch("/api/practicetest", {
+      method: "POST",
+      body: JSON.stringify({
+        username: localStorage.getItem("username"),
+        title: title,
+        note: note,
+        other: guides.map((guide) => {
+          return guide.questions.split("Answer:")[0];
+        }),
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })).json();
+    console.log(b.choices[0].message.content)
+    return b.choices[0].message.content;
+  }
   return (
-    <div>
+
+    <div className="">
+      <style>{`
+        .searchBar {
+          filter: drop-shadow(0px 0px 2px #EDF2D4);
+          transition: 0.1s;
+        }
+        .searchBar:hover{
+          filter: drop-shadow(0px 0px 5px #EDF2D4);
+        }
+        .searchPlaceholder:focus {
+          outline: none;
+        }
+        .searchPlaceholder::placeholder {
+          font-weight: bold;
+          font-size: 1.5rem;
+          color: #868D83;
+        }
+      `}</style>
+      <NotePopUp visible = {visible}  title = {curnote.title} content = {curnote.content} setVisible = {setVisible} searchWords = {search} createnewQuestion = {createnewQuestion}>
+      </NotePopUp>
       <Menu></Menu>
-      <div className="w-[80%] absolute left-[25%] top-[0]">
-        <div className="w-[100%] flex items-center  justify-center pt-14">
-          <div className="w-[50%] flex items-center justify-center">
-            <input
-              type="text"
-              id="search"
-              placeholder="Enter search..."
-              className=" bg-[#EDF2D4] w-[90%] p-3 pl-10 rounded-2xl font-bold "
-              onChange={() => {
-                setSearch(document.getElementById("search").value);
-              }}
-            ></input>
+      <div className="w-[80%] absolute left-[28vw] top-[10vh]">
+        <div className="w-[80%] flex items-center justify-center">
+            <div className="searchBar bg-[#EDF2D4] w-[80%] pt-4 pb-[0.5rem] pl-[2vw] rounded-2xl font-bold inline-block align-middle">
             <Image
-              src={"/search.svg"}
-              alt="Search Icon"
-              width={20}
-              height={20}
-              className="absolute left-[29%]"
-            ></Image>
+                src={"/search.svg"}
+                alt="Search Icon"
+                width={20}
+                height={20}
+                className="inline-block opacity-50 mt-[-10px]"
+                
+              ></Image>
+              <input
+                type="text"
+                id="search"
+                placeholder="Enter search..."
+                className="inline-block bg-[transparent] w-[80%] font-bold text-2xl outline-none searchPlaceholder mt-[-10px] ml-2"
+                onChange={() => {
+                  setSearch(document.getElementById("search").value);
+                }}
+              ></input>
+              
+            </div>
           </div>
-        </div>
-        <div className="flex flex-col mx-auto w-[70%]">
+        <div className="flex flex-col mx-auto w-[80%] mt-5">
           {notes &&
             notes.map((note) => {
               if (!shouldDisplay(note)) return null;
               return (
-                <div>
-                  <h2 className=" text-3xl text-[#868D83]">
+               
+                
+
+                <div className="flex flex-row items-center" onClick= {() => {
+                  setNote({title: note.title, content: note.note});
+                  setVisible(true);
+                }}>
+                  
+                  <Image className="mt-[0]pt-2" src="/bars.svg" width={30} height={30}></Image>
+                  <h2 className=" ml-3 text-3xl text-[#36413E] font-semibold opacity-60">
                     <Highlighter
                       searchWords={[search]}
                       caseSensitive={false}
                       textToHighlight={note.title}
                     ></Highlighter>
                   </h2>
+                  {note.isOpen && (<div >
                   <Highlighter
                     searchWords={[search]}
                     caseSensitive={false}
                     textToHighlight={note.note}
                   ></Highlighter>
+                  
                   {guides.map((guide) => {
                     if (guide.title === note.title) {
                       return (
@@ -89,38 +147,8 @@ export default function Explorenotes() {
                       );
                     }
                   })}
-                  <button
-                    onClick={() => {
-                      fetch("/api/practicetest", {
-                        method: "POST",
-                        body: JSON.stringify({
-                          username: localStorage.getItem("username"),
-                          title: note.title,
-                          note: note.note,
-                          other: guides.map((guide) => {
-                            return guide.questions.split("Answer:")[0];
-                          }),
-                        }),
-                        headers: {
-                          "Content-Type": "application/json",
-                        },
-                      })
-                        .then((res) => res.json())
-                        .then((res) => {
-                          console.log(res);
-                          console.log(guides);
-                          setGuides(
-                            guides.concat({
-                              title: note.title,
-                              note: note.note,
-                              questions: res.choices[0].message.content,
-                            })
-                          );
-                        });
-                    }}
-                  >
-                    Create Practice Test
-                  </button>
+                  
+                  </div>)}
                 </div>
               );
             })}

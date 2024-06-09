@@ -1,34 +1,82 @@
-export default function UploadNotes() {
+  export default function UploadNotes() {
   return (
     <div className="flex flex-col">
-      <style>{`
-      titleText{
-      background-color: #f5f5f5; 
-      border: 1px solid #e0e0e0; 
-      border-radius: 5px; 
-      padding: 10px; 
-      margin-bottom: 10px; 
-      font-size: 1.5rem; 
-      font-family: 'Poppins', sans-serif; 
-      font-weight: 500; 
-      color: #333; 
-      transition: 0.3s; 
-      outline: none;
+      <style>{
+      `
+      .titleText{
+        background-color: #FFFEEA; 
+        border: none;
+        // border-bottom: 2px solid #28312E; 
+        border-radius: 0px; 
+        padding: 10px; 
+        margin-bottom: 10px; 
+        font-size: 3vh; 
+        font-family: 'Inter', sans-serif; 
+        font-weight: 800; 
+        color: #333; 
+        transition: 0.1s; 
+        outline: none;
+        word-wrap: break-word;
+        word-break: break-all;
       }
+      .titleText::placeholder{
+        color: #28312E; 
+        opacity: 0.5;
+      }
+      
+     
+
+      .textBody{
+        background-color: #FFFEEA; 
+        border: none; 
+        border-radius: 0px; 
+        padding: 10px; 
+        margin-bottom: 10px; 
+        font-size: 2vh; 
+        font-family: 'Inter', sans-serif; 
+        font-weight: 400; 
+        color: #333; 
+        transition: 0.1s; 
+        outline: none;
+      }
+      .textBody::placeholder{
+        color: #28312E; 
+        opacity: 0.5;
+      }
+
+      #upload{
+        background-color: #EDF2D4; 
+        border: none; 
+        border-radius: 0px; 
+        padding: 10px; 
+        font-size: 2vh; 
+        font-family: 'Inter', sans-serif; 
+        font-weight: 800; 
+        color: #28312E; 
+        transition: 0.1s; 
+        cursor: pointer;
+        border-radius: 10px;
+      }
+
+      #upload:hover{
+        filter:drop-shadow(0px 0px 5px #EDF2D4);
+      }
+
+      #upload:active{
+        transform: scaleY(0.95);
+      }
+
       `}</style>
       <input
         type="text"
         id="title"
         placeholder="Title"
         className="w-[40vw] h-[6vh] titleText"
-
+        maxlength="34"
       />
-      <textarea id="notes" className="w-[40vw] h-[60vh] resize-none" />
-      <button onClick={() => {
-        if(localStorage.getItem("hash") === null){
-            window.location.href = "/login"
-            return
-        }
+      <textarea id="notes" className="w-[40vw] h-[60vh] resize-none textBody" placeholder="Start typing here..." />
+      <button id="upload" onClick={() => {
+       
         fetch("/api/addnotes", {
           method: "POST",
           body: JSON.stringify({
@@ -43,7 +91,7 @@ export default function UploadNotes() {
         })
           .then((res) => res.json())
           .then((res) => {
-            console.log(res);
+            window.location.href = "/explorenotes"
           });
       }}>
         Upload

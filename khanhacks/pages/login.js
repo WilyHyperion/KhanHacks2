@@ -23,9 +23,15 @@ export default function Login() {
                     color: #36413E;
                     margin-left: 10px;
                 }
+                .input-username::placeholder,.input-password::placeholder {
+                    color: #36413E;
+                    opacity: 0.55;
+                }
+
                 .login-button, .register-button {
                     font-weight: 700;
                 }
+
                 .header {
                     display: flex;
                     justify-content: space-between;
