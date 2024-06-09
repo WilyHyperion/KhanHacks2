@@ -56,11 +56,11 @@ export default function Home() {
   return (
     <>
     
-    
+
     <Menu page = {0} />
-    <div className="relative block ">
-      
-    </div>
+    {/* align content to the right side of the page */}
+    
+    
     </>
     
   );

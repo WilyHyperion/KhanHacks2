@@ -27,7 +27,7 @@ export default function Login() {
                     color: #36413E;
                     opacity: 0.55;
                 }
-                    
+        
 
                 .login-button, .register-button {
                     font-weight: 700;
@@ -44,6 +44,11 @@ export default function Login() {
                     font-weight: bold;
                     text-align: center;
                     margin: 0 auto; /* Center the title horizontally */
+                }
+                @keyframes bobAnimation {
+                    50% {
+                        transform: translateY(-10px);
+                    }
                 }
             `}</style>
             <div className="w-full h-full flex flex-col items-center">
@@ -65,6 +70,8 @@ export default function Login() {
                     </div>
                     <div className="flex space-x-6">
                         <button className="w-[120px] h-[40px] text-2xl underline-button login-button" onClick={() => {
+                            // Apply the bobanimation to register button
+                            document.querySelector(".register-button").style.animation = "bobAnimation 0.5s ease-in-out infinite alternate";
                             fetch("/api/login", {
                                 method: "POST",
                                 body: JSON.stringify({
@@ -77,6 +84,7 @@ export default function Login() {
                             })
                                 .then((res) => res.json())
                                 .then((res) => {
+                                    document.querySelector(".register-button").style.animation = "none"; // Stop the bob animation
                                     if(res.success){
                                         localStorage.setItem("hash", res.hash);
                                         localStorage.setItem("username", document.getElementById("Username").value);

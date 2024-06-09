@@ -1,13 +1,14 @@
 import Highlighter from "react-highlight-words";
 import { useState } from "react";
 import StudyGuide from "./StudyGuide";
-export default function NotePopUp(props) {  
+export default function NotePopUp(props) { 
+    
+    const [summary, setSummary] = useState(""); 
     const [questions, setQuestions] = useState([]);
     let visible = props.visible;
     if(!visible) return (<></>);
     let title = props.title;
     let content = props.content;
-    
     return (
         
     <div className="absolute w-[100vw] h-[100vh] bg-[#0000009c] z-10">
@@ -19,6 +20,7 @@ export default function NotePopUp(props) {
         <div className="w-[80vw] h-[80vh] absolute left-[10vw] top-[10vh]   z-20 bg-[#EDF2D4] rounded-3xl drop-shadow-[0_0_20px_#EDF2D49c] " >
             <button className="w-[50px] h-[50px] absolute right-0 top-0" onClick={() => {
                 setQuestions([]);
+                setSummary("");
                 props.setVisible(false);
 
             }}>X</button>
@@ -46,6 +48,22 @@ export default function NotePopUp(props) {
                 console.log(questions);
                 setQuestions([...questions, newq]);
             }}>Add Study Question</button>
+            <hr className=" border-black my-5 "></hr>
+            {summary}
+             <button className="w-[100%] h-[8vh] bg-[#36413E] text-[#EDF2D4] font-semibold rounded-[21px] mt-5" onClick={async () => {
+                let s = await ( await fetch("/api/createSummary", { 
+                    method: "POST",
+                    body: JSON.stringify({
+                        content: content,
+                        title: title,
+                    }),
+                    headers: {
+                        "Content-Type": "application/json",
+                    }
+                })).json();
+                console.log(s);
+                setSummary(s.choices[0].message.content)
+            }}>Create Summary</button>  
 
             </div>
         </div>
