@@ -1,4 +1,5 @@
 
 
 # Installing
-This project uses tesseract, follow their install instructions aswell
+```npm i``` in the project directory 
+create a .env with OPENAI_API_KEY set, as well as all the vairbles provided by vercel for a postgres database.
