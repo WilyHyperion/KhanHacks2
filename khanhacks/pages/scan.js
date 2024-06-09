@@ -7,7 +7,7 @@ export default function Scan() {
   const [capturedImage, setCapturedImage] = useState(null);
   const [title, setTitle] = useState(''); // State to hold the title text
 
-  const capture = () => {
+  const capture = (callback) => {
     const imageSrc = webcamRef.current.getScreenshot();
     setCapturedImage(imageSrc);
   };
@@ -18,7 +18,7 @@ export default function Scan() {
 
   return (
     <>
-      <Menu />
+      <Menu page = {4} />
 
       <div style={{ display: 'flex', justifyContent: 'flex-end', paddingRight: '125px', marginTop: '-200px' }}>
         <div style={{ maxWidth: '500px', width: '100%' }}>
@@ -43,11 +43,12 @@ export default function Scan() {
                       display: 'flex', 
                       alignItems: 'center', 
                       padding: '10px 20px',
-                      backgroundColor: '#ffffff',
-                      border: '1px solid #ccc',
-                      borderRadius: '5px',
+                      backgroundColor: '#EDF2D4',
+                      border: '0px solid #ccc',
+                      borderRadius: '15px',
                       cursor: 'pointer',
-                      marginRight: '10px'
+                      marginRight: '10px',
+                      className: "hover:scale-105 hover:drop-shadow-sm"
                     }}
                   >
                     <img
@@ -59,32 +60,42 @@ export default function Scan() {
                   </button>
                   <button 
                     onClick={() => 
-                      capture(() => {
                         fetch('/api/imagetotext', {
                           method: 'POST',
                           headers: {
                             'Content-Type': 'application/json',
                           },
                           body: JSON.stringify({
-                            title: title,
                             data: capturedImage,
                           }),
                         }).then((res) => {
                           return res.json();
                         }).then((data) => {
-                          console.log(data);
+                          fetch('/api/addnotes', {
+                            method: 'POST',
+                            headers: {
+                              'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                              hash: localStorage.getItem('hash'),
+                              username: localStorage.getItem('username'),
+                              note: data.text,
+                              title: title,
+                            }),
+                          }).then(() => {
+                            window.location.href = '/explorenotes';
+                          });
                         })
-
-                      })
                     }
                     style={{ 
                       display: 'flex', 
                       alignItems: 'center', 
                       padding: '10px 20px',
-                      backgroundColor: '#ffffff',
-                      border: '1px solid #ccc',
-                      borderRadius: '5px',
-                      cursor: 'pointer'
+                      backgroundColor: '#EDF2D4',
+                      border: '0px solid #ccc',
+                      borderRadius: '15px',
+                      cursor: 'pointer',
+                      className: "hover:scale-105 hover:drop-shadow-sm"
                     }}
                   >
                     <img
@@ -114,10 +125,11 @@ export default function Scan() {
                       display: 'flex', 
                       alignItems: 'center', 
                       padding: '10px 20px',
-                      backgroundColor: '#ffffff',
-                      border: '1px solid #ccc',
-                      borderRadius: '5px',
-                      cursor: 'pointer'
+                      backgroundColor: '#EDF2D4',
+                      border: '0px solid #ccc',
+                      borderRadius: '15px',
+                      cursor: 'pointer',
+                      className: "hover:scale-105 hover:drop-shadow-sm"
                     }}
                   >
                     <img

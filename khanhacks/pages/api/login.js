@@ -8,7 +8,7 @@ export default async function handler(req, res){
     let u = await sql`SELECT * FROM users WHERE username = ${user} AND hash = ${hash}`;
     console.log(u);
     if(u.rowCount > 0){
-        res.status(200).json({success: true, message: "User found"});
+        res.status(200).json({success: true, message: "User found", hash: hash, username: user});
     }
     else{
         res.status(404).json({success: false, message: "User not found"});

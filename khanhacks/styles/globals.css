@@ -6,6 +6,7 @@
   @apply bg-[#FFFEEA] text-[2vh] font-normal text-[#333] transition-[0.1s] mb-2.5 p-2.5 rounded-none border-[none];
   font-family: "Inter", sans-serif;
   outline: none;
+  padding: 0 !important;
 }
 #upload {
   @apply bg-[#EDF2D4] text-[2vh] font-extrabold text-[#28312E] transition-[0.1s] cursor-pointer p-2.5 rounded-none rounded-[10px] border-[none];

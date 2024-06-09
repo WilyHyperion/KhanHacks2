@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 
-export default function Menu() {
+export default function Menu(props) {
+  let page = props.page;
+  console.log(page);
   const [username, setUsername] = useState("");
+  const [logged, setlogged]= useState(false);
+
   useEffect(() => {
-    if (!localStorage.getItem("hash")) {
-      window.location.href = "/login";
-    }
+    setlogged(localStorage.getItem("hash") ? true : false);
     setUsername(localStorage.getItem("username"));
   }, []);
   return (
@@ -38,7 +40,7 @@ export default function Menu() {
         <div className="font-black text-6xl">Welcome</div>
         {username && <div className="font-extralight text-4xl">{username}</div>}
         <div className="font-extralight text-4xl"></div>
-        <div className="font-semibold text-2xl grid grid-cols-[20vw] grid-rows-[repeat(4,2xl)] text-[#36413E]">
+        <div className={` text-2xl grid grid-cols-[20vw] grid-rows-[repeat(4,2xl)] text-[#36413E] ${props.page === 1 ? 'font-bold' : 'font-semibold'}`}>
           <div className="listitem">
               <img src="/search.svg" alt="Search Icon" className="listSVG" />
               <a href = "/explorenotes">
@@ -63,6 +65,15 @@ export default function Menu() {
             Scan a note
             </a>
           </div>
+          <div className="listitem">
+           {logged && <a href = "/logout">
+            <img src="/person.svg" alt="Camera" className="listSVG" />
+            Logout
+            </a> } {!logged && <a href = "/logout">
+            <img src="/person.svg" alt="Camera" className="listSVG" />
+            Login
+            </a> }
+          </div> 
         </div>
       </div>
     </>

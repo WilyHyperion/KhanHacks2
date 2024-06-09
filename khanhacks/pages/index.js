@@ -57,10 +57,9 @@ export default function Home() {
     <>
     
     
-    <Menu/>
+    <Menu page = {0} />
     <div className="relative block ">
-      <a href="/login">Login</a>
-      <ViewNotes/>
+      
     </div>
     </>
     

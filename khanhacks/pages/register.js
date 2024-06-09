@@ -21,6 +21,12 @@ export default function Register() {
                     font-weight: 700;
                     color: #36413E;
                 }
+
+                .input-username::placeholder,.input-password::placeholder {
+                    color: #36413E;
+                    opacity: 0.55;
+                }
+                    
                 .login-button, .register-button {
                     font-weight: 700;
                 }

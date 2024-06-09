@@ -82,7 +82,7 @@ export default function Explorenotes() {
       `}</style>
       <NotePopUp visible = {visible}  title = {curnote.title} content = {curnote.content} setVisible = {setVisible} searchWords = {search} createnewQuestion = {createnewQuestion}>
       </NotePopUp>
-      <Menu></Menu>
+      <Menu page = {1}></Menu>
       <div className="w-[80%] absolute left-[28vw] top-[10vh]">
         <div className="w-[80%] flex items-center justify-center">
             <div className="searchBar bg-[#EDF2D4] w-[80%] pt-4 pb-[0.5rem] pl-[2vw] rounded-2xl font-bold inline-block align-middle">

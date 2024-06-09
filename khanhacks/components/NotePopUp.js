@@ -9,16 +9,22 @@ export default function NotePopUp(props) {
     let content = props.content;
     
     return (
+        
     <div className="absolute w-[100vw] h-[100vh] bg-[#0000009c] z-10">
+        <style>{`
+        pre::{
+            
+        }
+        `}</style>
         <div className="w-[80vw] h-[80vh] absolute left-[10vw] top-[10vh]   z-20 bg-[#EDF2D4] rounded-3xl drop-shadow-[0_0_20px_#EDF2D49c] " >
             <button className="w-[50px] h-[50px] absolute right-0 top-0" onClick={() => {
                 setQuestions([]);
                 props.setVisible(false);
 
             }}>X</button>
-            <h1 className="text-4xl w-full text-center pt-5  text-[#36413E]">{title}</h1>
+            <h1 className="text-4xl w-full text-center pt-5 font-black  text-[#36413E]">{title}</h1>
             <div className="w-[70%] h-[90%] mx-auto text-xl text-[#36413E] overflow-y-scroll   ">
-            <pre className=" whitespace-pre-wrap ">
+            <pre className=" whitespace-pre-wrap mt-10">
             <Highlighter  searchWords={[props.searchWords]} textToHighlight={content}></Highlighter>
             </pre>
             <hr className=" border-black my-5 "></hr>

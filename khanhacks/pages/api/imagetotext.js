@@ -1,4 +1,6 @@
+
 import { createWorker } from "tesseract.js";
+
 export const config = {
   api: {
     bodyParser: {
@@ -15,11 +17,11 @@ export default async function handler(req, res) {
     let buff = Buffer.from(image.replace(/^data:image\/(png|gif|jpeg);base64,/,''), 'base64');
     let s = sharp(buff);
     let metadeta = await s.metadata();
-    s = s.resize(Math.round(metadeta.width * 2), Math.round( metadeta.height * 2 ));
-    s = s.grayscale();
     s = s.toBuffer();
     s = await s;
-    const worker = await createWorker("eng");
+    const worker = await createWorker( 'eng', {
+        tessedit_ocr_engine_mode: 1, 
+      });
     const r = await worker.recognize(s);
     const text = r.data.text;
     await worker.terminate();

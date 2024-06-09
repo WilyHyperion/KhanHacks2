@@ -59,7 +59,7 @@ export default function Upload() {
                     color: #FFFEEA;
                 }
             `}</style>
-      <Menu />
+      <Menu page = {3} />
       <div className="flex justify-end mr-[10lh]">
         <div className="flex justify-start flex-col .title-input">
           {" "}
