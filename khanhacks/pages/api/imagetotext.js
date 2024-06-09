@@ -10,7 +10,6 @@ import OpenAI from "openai";
 const openai = new OpenAI(process.env.OPENAI_API_KEY);
 export default async function handler(req, res) {
   try {
-    console.log("ran");
     const sharp = require('sharp');
     let image = req.body.data;
     let buff = Buffer.from(image.replace(/^data:image\/(png|gif|jpeg);base64,/,''), 'base64');
@@ -30,7 +29,7 @@ export default async function handler(req, res) {
        {
         role: "system",
         content: [
-          { type: "text", text: "Take the following text and correct any typos present within it that you can see. However, do not modify the phrasing or formatting of the provided text and respond with the corrected original text ONLY.t" },
+          { type: "text", text: "Take the following text and correct any typos present within it that you can see. However, do not modify the phrasing or formatting of the provided text and respond with the corrected original text ONLY." },
         ],
        },
        {

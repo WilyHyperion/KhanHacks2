@@ -124,7 +124,7 @@ export default function Explorenotes() {
                     <Highlighter
                       searchWords={[search]}
                       caseSensitive={false}
-                      textToHighlight={note.title}
+                      textToHighlight={note.title !== "" ? note.title : "Untitled"}
                     ></Highlighter>
                   </h2>
                   {note.isOpen && (<div >
